@@ -1,0 +1,12 @@
+spring:
+  # on dev fail if unknown properties are set
+  jackson:
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: true
+  # show sql on dev
+  jpa:
+    show-sql: true
+  flyway:
+    locations:
+    - "classpath:/db/migration"
+    - "classpath:/db/testdata"

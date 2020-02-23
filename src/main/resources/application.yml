@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: 'HSE Online Store Application'
+  datasource:
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 5
+    url: 'jdbc:postgresql://localhost:5432/store'
+    username: 'postgres'
+    password: 'postgres'
+  jpa:
+    hibernate:
+      ddl-auto: none
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  servlet:
+    context-path: '/'

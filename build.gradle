@@ -1,0 +1,76 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.4.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+	id 'com.github.node-gradle.node' version '2.2.1'
+}
+group = 'com.hse24.shop'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+wrapper{
+    gradleVersion ="5.2.1"
+}
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	//lombok stuff
+	compileOnly 'org.projectlombok:lombok:1.18.8'
+	annotationProcessor 'org.projectlombok:lombok:1.18.8'
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.postgresql:postgresql:42.2.9'
+
+    implementation "io.springfox:springfox-swagger2:2.9.2"
+    implementation "io.springfox:springfox-swagger-ui:2.9.2"
+
+    // add database migration
+    implementation "org.flywaydb:flyway-core:6.2.3"
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+node {
+	version = '12.8.0'
+	download = true
+
+	workDir = file("${project.projectDir}/src/main/app/nodejs")
+	npmWorkDir = file("${project.projectDir}/src/main/app/npm")
+	nodeModulesDir = file("${project.projectDir}/src/main/app")
+}
+
+task npmInstallDependencies(type: NpmTask){
+	dependsOn 'npmSetup'
+	execOverrides {
+		it.workingDir = 'src/main/app'
+	}
+	args = ['run', 'build']
+}
+
+task npmBuild(type: NpmTask){
+	dependsOn 'npmInstallDependencies'
+	execOverrides {
+		it.workingDir = 'src/main/app'
+	}
+	args = ['run', 'build']
+}
+
+task copyAppToBuild(type: Copy){
+	dependsOn 'npmBuild'
+	from "$projectDir/src/main/app/build/"
+	into "$buildDir/resources/main/static"
+}
+
+processResources {
+	dependsOn 'copyAppToBuild'
+}
+
+test {
+	useJUnitPlatform()
+}
