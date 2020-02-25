@@ -31,8 +31,13 @@ public class ProductRestController {
     }
 
     @PutMapping(path = "/", consumes = "application/json")
-    public ProductResponseTDO addProduct(@Valid @RequestBody ProductRequestTDO category) {
-        return controller.add(category);
+    public ProductResponseTDO addProduct(@Valid @RequestBody ProductRequestTDO product) {
+        return controller.add(product);
+    }
+
+    @PutMapping(path = "/{id}", consumes = "application/json")
+    public ProductResponseTDO updateProduct(@PathVariable(name = "id") Long id, @Valid @RequestBody ProductRequestTDO product) {
+        return controller.update(id, product);
     }
 
     @DeleteMapping(path = "/{id}")

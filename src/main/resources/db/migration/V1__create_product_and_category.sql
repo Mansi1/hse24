@@ -19,6 +19,6 @@ CREATE TABLE product
     description VARCHAR(2048),
     price       FLOAT                                      NOT NULL CHECK (price > 0),
     category_id BIGINT                                     NOT NULL,
-    FOREIGN KEY (category_id) REFERENCES category (id)
+    FOREIGN KEY (category_id) REFERENCES category (id)  ON DELETE CASCADE
 );
 

@@ -13,7 +13,8 @@ spring:
       ddl-auto: none
   jackson:
     default-property-inclusion: non_null
-
+fixerio:
+  api-key: 'put here your key'
 server:
   servlet:
     context-path: '/'

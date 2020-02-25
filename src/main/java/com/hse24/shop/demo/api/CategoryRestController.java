@@ -37,11 +37,15 @@ public class CategoryRestController {
         return controller.add(category);
     }
 
+    @PutMapping(path = "/{id}", consumes = "application/json")
+    public CategoryResponseTDO updateCategory(@PathVariable(name = "id") Long id, @Valid @RequestBody CategoryRequestTDO category) {
+        return controller.update(id, category);
+    }
+
     @DeleteMapping(path = "/{id}")
     public void deleteCategoryById(@PathVariable(name = "id") Long id) {
         controller.delete(id);
     }
-
 
 
 }

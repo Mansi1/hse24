@@ -26,6 +26,7 @@ public class SwaggerConfig {
                 .build()
                 .apiInfo(info);
     }
+
     @Bean
     public ApiInfo metaData() {
         return new ApiInfo(
@@ -37,6 +38,6 @@ public class SwaggerConfig {
                 "Apache License Version 2.0",
                 "https://www.apache.org/licenses/LICENSE-2.0",
                 List.of()
-                );
+        );
     }
 }

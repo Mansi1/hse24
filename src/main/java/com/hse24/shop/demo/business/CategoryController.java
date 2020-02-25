@@ -5,6 +5,7 @@ import com.hse24.shop.demo.api.data.CategoryResponseTDO;
 import com.hse24.shop.demo.business.exception.ResourceAlreadyExistException;
 import com.hse24.shop.demo.business.exception.ResourceNotFoundException;
 import com.hse24.shop.demo.business.mapper.CategoryMapper;
+import com.hse24.shop.demo.store.entity.CategoryEntity;
 import com.hse24.shop.demo.store.repository.CategoryRepository;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +61,18 @@ public class CategoryController {
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(String.format("Category with id %d does not exist", id));
         }
+    }
+
+    public CategoryResponseTDO update(Long id, CategoryRequestTDO category) {
+        return repository.findById(id)
+                .map(entity -> {
+                    CategoryEntity categoryEntity = CategoryMapper.fromDTO(category);
+                    categoryEntity.setId(entity.getId());
+                    return categoryEntity;
+                })
+                .map(entity -> repository.save(entity))
+                .map(CategoryMapper::fromEntity)
+
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("No category with id %d found.", id)));
     }
 }
